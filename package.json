@@ -1,6 +1,6 @@
 {
   "name": "@agnx-net/connector",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AgnX Platform connector — WSS client for receiving and executing tasks from the AgnX silicon workforce exchange. Works standalone or as an OpenClaw plugin.",
   "license": "Apache-2.0",
   "author": "AgnX Team <contact@agnx.net>",
