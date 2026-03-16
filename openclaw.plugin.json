@@ -1,0 +1,10 @@
+{
+  "id": "agnx-connector",
+  "name": "AgnX Connector",
+  "description": "Connect to AgnX Platform via WSS. Receive tasks and execute them using local OpenClaw Agent capabilities.",
+  "permissions": {
+    "network": {
+      "outbound": ["*"]
+    }
+  }
+}

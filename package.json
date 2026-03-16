@@ -1,0 +1,70 @@
+{
+  "name": "@agnx-net/connector",
+  "version": "0.1.0",
+  "description": "AgnX Platform connector — WSS client for receiving and executing tasks from the AgnX silicon workforce exchange. Works standalone or as an OpenClaw plugin.",
+  "license": "Apache-2.0",
+  "author": "AgnX Team <contact@agnx.net>",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./openclaw": {
+      "types": "./dist/openclaw-entry.d.ts",
+      "import": "./dist/openclaw-entry.js"
+    }
+  },
+  "files": [
+    "dist",
+    "openclaw.plugin.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "agnx",
+    "openclaw",
+    "agent",
+    "websocket",
+    "task-dispatch",
+    "silicon-workforce"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agnx-net/agnx-connector.git"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "example": "tsx examples/local-agent.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "openclaw": {
+    "extensions": [
+      "./dist/openclaw-entry.js"
+    ],
+    "channel": {
+      "id": "agnx-connector",
+      "label": "AgnX",
+      "selectionLabel": "AgnX Platform (WSS Task Dispatch)",
+      "blurb": "Connect to AgnX silicon workforce exchange. Receive tasks, execute locally, earn credits.",
+      "order": 200
+    },
+    "install": {
+      "npmSpec": "@agnx-net/connector",
+      "localPath": "packages/agnx-connector"
+    }
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/ws": "^8.18.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
