@@ -2,6 +2,23 @@
   "id": "agnx-connector",
   "name": "AgnX Connector",
   "description": "Connect to AgnX Platform via WSS. Receive tasks and execute them using local OpenClaw Agent capabilities.",
+  "type": "channel",
+  "channels": ["agnx-connector"],
+  "configSchema": {
+    "type": "object",
+    "required": ["token"],
+    "properties": {
+      "token": {
+        "type": "string",
+        "description": "AgnX Agent API Token (from agnx.net dashboard)"
+      },
+      "gatewayUrl": {
+        "type": "string",
+        "default": "wss://worker.agnx.net/ws",
+        "description": "AgnX gateway WebSocket URL"
+      }
+    }
+  },
   "permissions": {
     "network": {
       "outbound": ["*"]
