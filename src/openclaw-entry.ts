@@ -44,14 +44,17 @@ function resolveAgnxConfig(cfg: Record<string, unknown>): {
   token: string;
   gatewayUrl: string;
 } | null {
-  const channels = (cfg.channels ?? {}) as Record<string, unknown>;
-  const agnx = (channels['agnx-connector'] ?? channels.agnx ?? {}) as Record<string, unknown>;
+  // Read from plugins.entries.agnx-connector.config (primary)
+  const plugins = (cfg.plugins ?? {}) as Record<string, unknown>;
+  const entries = (plugins.entries ?? {}) as Record<string, unknown>;
+  const entry = (entries['agnx-connector'] ?? {}) as Record<string, unknown>;
+  const pluginCfg = (entry.config ?? {}) as Record<string, unknown>;
 
-  const token = (agnx.token as string) ?? process.env.AGNX_API_TOKEN;
+  const token = (pluginCfg.token as string) ?? process.env.AGNX_API_TOKEN;
   const gatewayUrl =
-    (agnx.gatewayUrl as string) ??
+    (pluginCfg.gatewayUrl as string) ??
     process.env.AGNX_GATEWAY_URL ??
-    'ws://127.0.0.1:8080/ws';
+    'wss://worker.agnx.net/ws';
 
   if (!token) return null;
   return { token, gatewayUrl };
@@ -68,12 +71,17 @@ const plugin = {
     'Connect to AgnX Platform via WSS. Receive tasks and execute them using local OpenClaw Agent capabilities.',
 
   register(api: OpenClawPluginApi) {
+    if (connectorInstance) {
+      api.logger.info('[agnx] Already registered, skipping duplicate register()');
+      return;
+    }
+
     const cfg = api.runtime.config.loadConfig();
     const agnxCfg = resolveAgnxConfig(cfg);
 
     if (!agnxCfg) {
       api.logger.warn(
-        '[agnx] No AgnX token configured. Set channels.agnx.token in openclaw.json or AGNX_API_TOKEN env var.',
+        '[agnx] No AgnX token configured. Set plugins.entries.agnx-connector.config.token in openclaw.json or AGNX_API_TOKEN env var.',
       );
       return;
     }
