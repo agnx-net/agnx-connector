@@ -39,7 +39,7 @@
     "build": "tsc --project tsconfig.json",
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "example": "tsx examples/local-agent.ts",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "prepublishOnly": "npm run build"
   },
   "openclaw": {
@@ -54,8 +54,7 @@
       "order": 200
     },
     "install": {
-      "npmSpec": "@agnx-net/connector",
-      "localPath": "packages/agnx-connector"
+      "npmSpec": "@agnx-net/connector"
     }
   },
   "dependencies": {
